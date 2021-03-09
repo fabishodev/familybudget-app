@@ -1,17 +1,25 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import App from './app/App';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+/*
+const App = () =>{
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+    let title = 'Listado de usuarios';
+    let text = 'Despliega la lista de usuarios del sistema';
+
+    return(
+        <Fragment>
+            <Header title={title} text={text}></Header>
+            <Content>
+                <Fragment>
+                    <button>Refrescar</button>
+                </Fragment>
+            </Content>
+            <Footer></Footer>
+        </Fragment>
+    );
+};
+*/
+
+ReactDOM.render(<App/>, document.getElementById('root'));

@@ -5,6 +5,7 @@ export default class Home extends Component{
         return(
             <div>
                 Home
+                Here is the Latest React version: <strong>{React.version}</strong>
             </div>
 
         );        

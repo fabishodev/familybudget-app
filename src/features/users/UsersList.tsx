@@ -1,10 +1,11 @@
 import React, { Fragment } from 'react';
 import {Button, Card, Image, Container} from 'semantic-ui-react';
-import IUser from '../../app/modules/user';
+//import IUser from '../../app/modules/user';
+import IUserDto from '../../app/modules/userDto';
 
 interface IProps{
-    users:IUser[],
-    editUserEvent: (user: IUser|null) => void;
+    users:IUserDto[],
+    editUserEvent: (user: IUserDto|null) => void;
 }
 
 const UserList = (props:IProps) =>{
@@ -18,7 +19,7 @@ const UserList = (props:IProps) =>{
             <br/>
             <Card.Group>
                 {
-                    props.users.map((user:IUser) => (
+                    props.users.map((user:IUserDto) => (
                         <Card  key={user.id}>
                                 <Card.Content>
                                     <Image

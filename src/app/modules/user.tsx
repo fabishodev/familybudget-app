@@ -7,5 +7,5 @@ export default interface IUser{
     lastName:string,
     userName:string,
     password:string,
-
+    profileId:number,
 };

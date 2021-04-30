@@ -1,25 +1,64 @@
 import React,{Fragment, useState, useEffect} from 'react';
-import {Grid, Segment, Form, Button} from 'semantic-ui-react';
-import IUser from '../../app/modules/user';
+import {Grid, Segment, Form, Button, Dropdown} from 'semantic-ui-react';
+//import IUser from '../../app/modules/user';
+import IUserDto from '../../app/modules/userDto';
+import IProfile from '../../app/modules/profile';
+import Profiles from '../../app/layouts/Profiles';
 
 interface IProps{
-    selectedUser:IUser|null,
+    selectedUser:IUserDto|null,
+    profiles:IProfile[],
     cancelEvent: ()=>void,
-    saveUserEvent: (user:IUser)=>void
+    saveUserEvent: (user:IUserDto)=>void
 }
 
-const UsersForm = ({selectedUser,cancelEvent,saveUserEvent}:IProps)=>{
+interface IItem{
+    key:string,
+    value:string,
+    text:string,
+}
+
+const UsersForm = ({selectedUser,profiles,cancelEvent,saveUserEvent}:IProps)=>{
+    
+    let profileList:IItem[]=[]; 
+
+    profiles.map((p)=>{
+        profileList.push({ key : p.id.toString(),value: p.id.toString(),text: p.name});
+    })
+
     let defaultUser = {
         id: 0,
         firstName: "",
         lastName: "",
         userName: "",
         password:"",
+        profileId: 0,
+        profile: {
+            id:0,
+            name:"",
+            description:"",
+        }
     }
 
-    let userValue:IUser = (selectedUser != null) ?selectedUser:defaultUser;
+    let userValue:IUserDto = (selectedUser != null) ?selectedUser:defaultUser;
 
-    const [user,setUser] = useState<IUser>(userValue);
+    const defaultProfileValue=((selectedUser == null)? profileList[0].value : selectedUser.profile.id).toString();
+
+    const [user,setUser] = useState<IUserDto>(userValue);
+
+    const handleProfileChanges = (event:any, result:any)=>{
+        const{value} =result || event.target;
+
+        let index = profiles.findIndex(p=> p.id == value);
+        let selectedProfile = profiles[index];
+
+        user.profileId = selectedProfile.id;
+        user.profile =selectedProfile;
+
+        setUser(user);
+
+
+    }
 
     const handleInputChanges = (event:any) =>{
         const {name, value} = event.target;
@@ -28,6 +67,9 @@ const UsersForm = ({selectedUser,cancelEvent,saveUserEvent}:IProps)=>{
     };
 
     let label = user.id == 0 ?  "New Family Member" : "Edit Family Member";
+
+    
+
 
     return(
         <Fragment>
@@ -48,12 +90,23 @@ const UsersForm = ({selectedUser,cancelEvent,saveUserEvent}:IProps)=>{
                         value={user.lastName}
                     />
 
-                     <Form.Input
+                    <Form.Input
                         name="userName" onChange={handleInputChanges}
                         placeholder="User Name"
                         autocomplete="off"
                         value={user.userName}
                     />
+
+                    <Dropdown 
+                         placeholder="Select Profile"
+                         fluid
+                         selection
+                         onChange={handleProfileChanges}
+                         options = {profileList}
+                         defaultValue = {defaultProfileValue}
+                    /> 
+
+                    
 
                     <Button onClick={()=> saveUserEvent(user)} floated="right" positive type="submit" content="Save"></Button>
                     <Button onClick={()=> cancelEvent()} floated="right" type="submit" content="Cancel"></Button>
